@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.StatisticsMapper">
+	<insert id="insert">
+		insert into statistics(url,browser,device) values(#{url},#{browser},#{device})
+	</insert>
+	<select id="total" resultType="int">
+		select count(*) from statistics
+	</select>
+	<select id="totalCount" resultType="int">
+		select count(*) from statistics
+	</select>
+	<select id="selectCount" resultType="int">
+		select count(*) from statistics	<include refid="search"></include>
+	</select>
+	<select id="selectByDate" resultType="StatisticsVO">
+		select * from statistics <include refid="search"></include> order by connectdate desc limit #{pageStart},#{perPageNum}
+	</select>
+
+	<select id="selectByBrowser" resultType="int">
+		select count(*) from  statistics <include refid="searchBrowser"></include>
+	</select>
+	
+	<select id="selectByDevice" resultType="int">
+		select count(*) from statistics <include refid="searchDevice"></include>
+	</select>
+	
+	<sql id="search">
+			where connectdate like concat('%',#{keyword},'%')
+	</sql>
+	
+	<sql id="searchBrowser">
+			where connectdate like concat('%',#{keyword},'%') and browser like concat('%',#{browser},'%')
+	</sql>
+	
+	<sql id="searchDevice">
+		where connectdate like concat('%',#{keyword},'%') and device like concat('%',#{device},'%')
+	</sql>
+</mapper>

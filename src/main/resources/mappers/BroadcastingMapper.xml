@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.BroadcastingMapper">
+
+	<select id="selectAll" resultType="BroadcastingVO">
+		select * from broadcasting order by bno desc
+	</select>
+	
+	<select id="selectOne" resultType="BroadcastingVO">
+		select * from broadcasting where bno=#{bno}
+	</select>
+	
+	<insert id="insert">
+		insert into broadcasting values(0, #{title}, #{writer}, #{content}, #{regdate}, 0)
+	</insert>
+	
+	<update id="update">
+		update broadcasting set title=#{title}, writer=#{writer}, content=#{content} where bno=#{bno}
+	</update>
+	
+	<update id="updateCnt">
+		update broadcasting set cnt=cnt+1 where bno=#{bno}
+	</update>
+	
+	<delete id="delete">
+		delete from broadcasting where bno=#{bno}
+	</delete>
+	
+	<select id="listSearch" resultType="NoticeVO">
+		select * from broadcasting <include refid="search"></include> order by bno desc, regdate desc limit #{pageStart},#{perPageNum}  
+	</select>
+	
+	<sql id="search">
+		<if test="searchType=='c'.toString()">
+			where content like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType=='t'.toString()">
+			where title like concat('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='r'.toString()">
+			where regdate like concat('%',#{keyword},'%')
+		</if>
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(bno) from broadcasting <include refid="search"></include>
+	</select>
+	
+</mapper>

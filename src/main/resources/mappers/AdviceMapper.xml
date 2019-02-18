@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.AdviceMapper">
+
+	<select id="selectAll" resultType="AdviceVO">
+		select * from advice order by bno desc
+	</select>
+	
+	<select id="selectOne" resultType="AdviceVO">
+		select * from advice where bno=#{bno}
+	</select>
+	
+	<insert id="insert">
+		insert into advice (writer, title, content, pwtype, pw) values(#{writer},#{title},#{content},#{pwtype}, #{pw})
+	</insert>
+	
+	<update id="update">
+		update advice set writer=#{writer}, title=#{title}, content=#{content} where bno=#{bno}
+	</update>
+	
+	<update id="updateCnt">
+		update advice set cnt=(cnt+1) where bno=#{bno}
+	</update>
+	
+	<update id="updateState">
+		update advice set state='답변완료' where bno=#{bno}
+	</update>
+	
+	<update id="updateStateWait">
+		update advice set state='답변대기' where bno=#{bno}
+	</update>
+	
+	<update id="updateReplyCnt">
+		update advice set replycnt = replycnt + #{amount} where bno = #{bno}
+	</update>
+	
+	<delete id="delete">
+		delete from advice where bno=#{bno}
+	</delete>
+	
+	<select id="listSearch" resultType="AdviceVO">
+		select * from advice <include refid="search"></include> order by bno desc, regdate desc limit #{pageStart},#{perPageNum}  
+	</select>
+	
+	<sql id="search">
+		<if test="searchType=='c'.toString()">
+			where content like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType=='t'.toString()">
+			where title like concat('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='r'.toString()">
+			where regdate like concat('%',#{keyword},'%')
+		</if>
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(bno) from advice <include refid="search"></include>
+	</select>
+	
+</mapper>
