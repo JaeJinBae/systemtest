@@ -335,7 +335,7 @@ public class HomeController {
               MimeMultipart multipart = new MimeMultipart();
               multipart.addBodyPart(body);
               multipart.addBodyPart(attachment);
-              msg.setContent(multipart);
+              msg.setContent(multipart, "text/plain; charset=UTF-8");
               
            }
         //전송
