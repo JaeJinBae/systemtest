@@ -167,7 +167,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/sendMailWithFile", method = RequestMethod.GET)
-	public String sendMailWithFile(Model model) {
+	public String sendMailWithFile() {
 		logger.info("sendMailWithFile");
 
 		return "main/sendMailWithFile";
@@ -183,6 +183,7 @@ public class HomeController {
 		
 		if (request.getContentType().startsWith("multipart/form-data")) {
 			try {
+				
 				HashMap data = getMailData(request, response);
 				sendMail(data);
 
@@ -242,6 +243,7 @@ public class HomeController {
 
 	private HashMap getMailData(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, MessagingException {
+		logger.info("getMailData 진입");
 		String boundary = request.getHeader("Content-Type");
 		int pos = boundary.indexOf('=');
 		boundary = boundary.substring(pos + 1);
@@ -252,8 +254,9 @@ public class HomeController {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		String name = null, value = null, filename = null, contentType = null;
 		HashMap mailData = new HashMap();
-
+		
 		int i = in.readLine(bytes, 0, 512);
+		
 		while (-1 != i) {
 			String st = new String(bytes, 0, i);
 			if (st.startsWith(boundary)) {
