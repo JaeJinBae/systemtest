@@ -53,10 +53,15 @@
 				console.log(order);
 			}
 		});
+		$(".btn").click(function(){
+			$(".test_input").prop("readonly",false);
+			
+		});
 	});
 </script>
 </head> 
-<body> 
+<body>
+	<input class="test_input" type="text" readonly><button class="btn">클릭</button> 
 	<form id="f1" method="post" action="excelDown">
 		<input type="submit" value="엑셀 다운">
 	</form>

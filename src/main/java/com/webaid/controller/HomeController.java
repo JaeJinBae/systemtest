@@ -1,11 +1,15 @@
 package com.webaid.controller;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,6 +44,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +67,15 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
+		logger.info("main");
+
+		search_blog();
+		
+		return "main/sns_test";
+	}
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index(Model model) {
 		logger.info("main");
 
 		List<MemberVO> list = mService.selectAll();
@@ -374,5 +389,54 @@ public class HomeController {
             return pa;
         }
     }
+	
+	@RequestMapping(value = "/search_blog_get", method = RequestMethod.GET)
+	public ResponseEntity<StringBuffer> register() {// @RequestBody이거 쓰면 무조건 json형식 사용할 때 씀
+		
+		ResponseEntity<StringBuffer> entity = null;
+		try {
+			StringBuffer str=search_blog();
+			entity = new ResponseEntity<StringBuffer>(str, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<StringBuffer>(HttpStatus.BAD_REQUEST);// 400 error
+		}
+		return entity;
+	}
+	
+	public static StringBuffer search_blog(){
+		String clientId = "PyGCsWIsGzsdElyaiWIM";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "Q78eM76t3V";//애플리케이션 클라이언트 시크릿값";
+        StringBuffer response = new StringBuffer();
+        try {
+            String text = URLEncoder.encode("대구홈페이지제작 웹에이드", "UTF-8");
+            String apiURL = "https://openapi.naver.com/v1/search/blog?query="+ text; // json 결과
+            //String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text; // xml 결과
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("X-Naver-Client-Id", clientId);
+            con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+            if(responseCode==200) { // 정상 호출
+                br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            } else {  // 에러 발생
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine+"\n");
+            }
+            
+            br.close();
+            System.out.println(response.toString());
+            return response;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+		return response;
+	}
 	
 }
