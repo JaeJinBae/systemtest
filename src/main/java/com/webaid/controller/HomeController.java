@@ -86,7 +86,21 @@ public class HomeController {
 
 		return "main/index";
 	}
+	
+	@RequestMapping(value = "/calendar", method = RequestMethod.GET)
+	public String calendar(Model model) {
+		logger.info("calendar");
 
+		return "test/calendar";
+	}
+	
+	@RequestMapping(value = "/calendar2", method = RequestMethod.GET)
+	public String calendar2(Model model) {
+		logger.info("calendar");
+	
+		return "test/calendar2";
+	}
+	
 	@RequestMapping(value = "/jdental1", method = RequestMethod.GET)
 	public String jdental1(Model model) {
 		logger.info("j dental test1");
@@ -437,6 +451,14 @@ public class HomeController {
             System.out.println(e);
         }
 		return response;
+	}
+	
+	//div drag test
+	@RequestMapping(value = "/drag_test", method = RequestMethod.GET)
+	public String drag_test(Model model) {
+		logger.info("drag_test");
+		
+		return "test/div_drag";
 	}
 	
 }

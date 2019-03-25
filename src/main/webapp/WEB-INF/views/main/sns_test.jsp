@@ -9,6 +9,12 @@
 <meta charset="UTF-8">
 <title>insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/sb-instagram.js"></script>
+<style>
+	hr{
+		margin: 40px 0 55px 0;
+	}
+</style>
 <script>
 	$(function(){
 		$(".blog_search_btn").click(function(){
@@ -41,7 +47,7 @@
 			})
 		});
 		
-		//
+		//https://graph.facebook.com/v3.2/me?fields=id%2Cname&access_token=EAAhYvRZAsoGoBAPFeWlZByGsLzqH8BLBTFI4yg3CwEeGkdJvXE37e7SRKSZCZBNg2MXBGSR4WR2EZBDc0i77z9w2QVa5XX6rTIMxzpxXrg4aIOMA6vVOfCoZBADv6XjJZCim4YTCO35C16cZAz2gL1PS3E9kN2HwN7ZBNo1FgmeujG1Q8VuxqGiJK
 		//https://api.instagram.com/v1/self/media/recent?access_token=ACCESS_TOKEN
 		//client_id=938e8dcc930744e1a816bce52cefa7db
 		//redirect_uri=http://www.webaid.co.kr/
@@ -49,7 +55,7 @@
 		$(".instagram_search_btn").click(function(){ 
 			
 			$.ajax({
-				url:"https://api.instagram.com/v1/self/media/recent?access_token=4408529207.938e8dc.b7e6799ba3b14639b373de9d4e7f580c",
+				url:"https://graph.facebook.com/ig_hashtag_search?user_id=17841409862417093&q=corediet",
 				type:"get",
 				dataType:encodeURI("json"), 
 				success:function(result){
@@ -89,6 +95,22 @@
     	<h3>인스타 검색결과</h3>
     	
     </div>
+    <div id="sb_instagram" class="sbi sbi_col_6" style="width:100%; padding-bottom: 10px;" data-id="911430952397936" data-num="12" data-res="high" data-cols="6" data-options='{&quot;sortby&quot;: &quot;none&quot;, &quot;headercolor&quot;: &quot;&quot;, &quot;imagepadding&quot;: &quot;5&quot;}'>
+    	<div class="sb_instagram_header" style="padding: 10px; padding-bottom: 0; display: none">
+    	</div> 
+    	<div id="sbi_images" style="padding: 5px;"> 
+	    	<div class="sbi_loader fa-spin">
+	    	</div> 
+	    </div> 
+    	<div id="sbi_load">
+    	</div> 
+    </div> 
+    <script type="text/javascript"> 
+    	var sb_instagram_js_options = {"sb_instagram_at" : "EAAhYvRZAsoGoBAI9TAZCAScQ9pajzuZBDmcOWXM4cgmvgJ2Nu6gbZAZBkucIsF1ZCZAxzQEXcNEW6TeaGPg53ZCP7OQywpkHKsIrDyZADVNfE3jfEvz80ru9UJ84inEEr6odGNqNsjQuqBSfoWYCyHUONVYJZBJvgFnCdqejX4x6IcJQZDZD"};
+    </script> 
+    
+
+
     
 </body>
 </html>
